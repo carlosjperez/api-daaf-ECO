@@ -1,0 +1,42 @@
+openapi: 3.0.2
+info:
+  title: Simple Flask API
+  description: A simple Flask-based API with basic endpoints
+  version: 1.0.0
+servers:
+  - url: https://api-daaf-gcloud.replit.app
+    description: Development server
+
+paths:
+  /:
+    get:
+      summary: Check API Status
+      description: Returns a message indicating that the API is running.
+      operationId: getApiStatus
+      responses:
+        '200':
+          description: A message confirming that the API is working
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "API running successfully"
+  /status:
+    get:
+      summary: Get API status
+      description: Returns a status message.
+      operationId: getStatusMessage
+      responses:
+        '200':
+          description: Returns a simple status message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "API is accessible"
