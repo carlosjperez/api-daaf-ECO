@@ -16,6 +16,7 @@ paths:
       responses:
         '302':
           description: Redirect to /apidocs
+
   /status:
     get:
       summary: Get API status
@@ -32,3 +33,37 @@ paths:
                   status:
                     type: string
                     example: "API is accessible"
+
+  /api/hello:
+    get:
+      summary: Hello World endpoint
+      description: Returns a greeting message.
+      operationId: helloWorld
+      responses:
+        '200':
+          description: Returns a greeting message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Hello, World!"
+
+  /getStatusMessage:
+    get:
+      summary: Get detailed status message
+      description: Returns a detailed status message about the API.
+      operationId: getDetailedStatusMessage
+      responses:
+        '200':
+          description: Returns a detailed status message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusMessage:
+                    type: string
+                    example: "API is running smoothly"

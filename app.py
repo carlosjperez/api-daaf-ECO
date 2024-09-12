@@ -5,15 +5,15 @@ from config import Config
 app = Flask(__name__)
 app.config.from_object(Config)
 
-# Set up Swagger UI with the OpenAPI documentation at /apidocs
+# Configuración de Swagger
 swagger_config = {
     "headers": [],
     "specs": [
         {
             "endpoint": 'apispec_1',
             "route": '/apidocs/apispec_1.json',
-            "rule_filter": lambda rule: True,  # all in
-            "model_filter": lambda tag: True,  # all in
+            "rule_filter": lambda rule: True,  # todos los endpoints
+            "model_filter": lambda tag: True,  # todos los modelos
         }
     ],
     "static_url_path": "/flasgger_static",
@@ -22,25 +22,19 @@ swagger_config = {
 }
 swagger = Swagger(app, config=swagger_config)
 
-# Redirect the root endpoint to the Swagger UI documentation
+# Redirección a la documentación Swagger
 @app.route('/')
 def index():
-    """Redirects to API documentation
-    ---
-    responses:
-      302:
-        description: A redirection to API documentation
-    """
     return redirect("/apidocs")
 
-@app.route('/status')
+@app.route('/status', methods=['GET'])
 def status():
-    """Get API status
-    Returns a status message.
+    """Estado de la API
+    Retorna un mensaje simple de estado.
     ---
     responses:
       200:
-        description: Returns a simple status message
+        description: Mensaje de estado simple
         schema:
           type: object
           properties:
@@ -50,14 +44,14 @@ def status():
     """
     return jsonify({"status": "API is accessible"})
 
-@app.route('/api/hello')
+@app.route('/api/hello', methods=['GET'])
 def hello():
-    """Hello World endpoint
-    Returns a simple greeting message.
+    """Endpoint Hello World
+    Retorna un mensaje de saludo simple.
     ---
     responses:
       200:
-        description: A simple greeting message
+        description: Mensaje de saludo
         schema:
           type: object
           properties:
@@ -69,12 +63,12 @@ def hello():
 
 @app.route('/getStatusMessage', methods=['GET'])
 def get_status_message():
-    """Get Status Message endpoint
-    Returns a detailed status message.
+    """Obtener mensaje de estado
+    Retorna un mensaje de estado detallado.
     ---
     responses:
       200:
-        description: A detailed status message
+        description: Mensaje de estado detallado
         schema:
           type: object
           properties:
