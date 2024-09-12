@@ -1,29 +1,37 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, redirect
 from flasgger import Swagger
 from config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
-# Set up Swagger UI with the OpenAPI documentation
-swagger = Swagger(app, template_file='openapi.yaml')
+# Set up Swagger UI with the OpenAPI documentation at /apidocs
+swagger_config = {
+    "headers": [],
+    "specs": [
+        {
+            "endpoint": 'apispec_1',
+            "route": '/apidocs/apispec_1.json',
+            "rule_filter": lambda rule: True,  # all in
+            "model_filter": lambda tag: True,  # all in
+        }
+    ],
+    "static_url_path": "/flasgger_static",
+    "swagger_ui": True,
+    "specs_route": "/apidocs/"
+}
+swagger = Swagger(app, config=swagger_config)
 
+# Redirect the root endpoint to the Swagger UI documentation
 @app.route('/')
 def index():
-    """Check API Status
-    Returns a message indicating that the API is running.
+    """Redirects to API documentation
     ---
     responses:
-      200:
-        description: A message confirming that the API is working
-        schema:
-          type: object
-          properties:
-            message:
-              type: string
-              example: "API running successfully"
+      302:
+        description: A redirection to API documentation
     """
-    return jsonify({"message": "API running successfully"})
+    return redirect("/apidocs")
 
 @app.route('/status')
 def status():
@@ -59,6 +67,22 @@ def hello():
     """
     return jsonify({"message": "Hello, World!"})
 
+@app.route('/getStatusMessage', methods=['GET'])
+def get_status_message():
+    """Get Status Message endpoint
+    Returns a detailed status message.
+    ---
+    responses:
+      200:
+        description: A detailed status message
+        schema:
+          type: object
+          properties:
+            statusMessage:
+              type: string
+              example: "API is running smoothly"
+    """
+    return jsonify({"statusMessage": "API is running smoothly"})
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000)
-  
