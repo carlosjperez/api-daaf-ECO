@@ -10,20 +10,12 @@ servers:
 paths:
   /:
     get:
-      summary: Check API Status
-      description: Returns a message indicating that the API is running.
-      operationId: getApiStatus
+      summary: Redirect to API docs
+      description: This endpoint redirects to the API documentation.
+      operationId: redirectToDocs
       responses:
-        '200':
-          description: A message confirming that the API is working
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "API running successfully"
+        '302':
+          description: Redirect to /apidocs
   /status:
     get:
       summary: Get API status
